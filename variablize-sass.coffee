@@ -34,21 +34,24 @@ ParseSass =
   forEachMatch:(match,lines, index)->
 
     url = match[1]
-    varName = "$lifelock-asset-url-"+count++
+    varName = if vars[url] then vars[url] else "$lifelock-asset-url-"+count++
 
     # save url to vars
-    vars[url] = varName
+    unless vars[url]? then vars[url] = varName
     # replace with var name
     lines[index] = lines[index].replace(url, varName)
 
   outputAllLines: (lines)->
     fs.writeFileSync @output, ""
+
     for k,v of vars
       output = "#{v}: #{k};"
       fs.appendFileSync @output, output+"\n"
 
-#    for line in lines
-#      fs.appendFileSync @output, line+"\n"
+    fs.appendFileSync @output, "\n\n\n"
+
+    for line in lines
+      fs.appendFileSync @output, line+"\n"
 
 
 
