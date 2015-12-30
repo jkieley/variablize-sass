@@ -5,9 +5,15 @@ count = 0
 
 ParseSass =
   myRegexp: /url\((".+?")\)/g
+  path:""
+  output: "./output.sass"
 
-  readFile: (path)->
-    fs.readFile path, 'utf8', (err, data) =>
+  inti: (path)->
+    @path = path
+    @readFile()
+
+  readFile: ()->
+    fs.readFile @path, 'utf8', (err, data) =>
       if err
         return console.log(err)
       else
@@ -23,6 +29,7 @@ ParseSass =
         while match?
           @forEachMatch(match,lines, index)
           match = @myRegexp.exec(line)
+    @printAllLines(lines)
 
   forEachMatch:(match,lines, index)->
 
@@ -34,9 +41,10 @@ ParseSass =
     # replace with var name
     lines[index] = lines[index].replace(url, varName)
 
-#    console.log lines[index]
+  printAllLines: (lines)->
+    for line in lines
+      fs.appendFile @output, line+"\n", ->
 
-    console.log index, lines[index]
 
 
-ParseSass.readFile('/Users/james.kiely/partner-offers/resources/styles/compiled-offers.scss')
+ParseSass.inti('/Users/james.kiely/partner-offers/resources/styles/compiled-offers.scss')
