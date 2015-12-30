@@ -1,3 +1,4 @@
 variablize-sass.iml
 *.iml
 .idea
+*.js*

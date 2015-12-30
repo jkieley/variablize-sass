@@ -16,23 +16,27 @@ ParseSass =
   onSuccessFullRead: (data)->
     lines = data.split('\n')
 
-    for line in lines
-      if line.indexOf('url(') isnt -1
-        match = @myRegexp.exec(line)
+    for line, index in lines
+      if lines[index].indexOf('url(') isnt -1
+
+        match = @myRegexp.exec(lines[index])
         while match?
-          @forEachMatch(match,line)
+          @forEachMatch(match,lines, index)
           match = @myRegexp.exec(line)
 
-  forEachMatch:(match,line)->
+  forEachMatch:(match,lines, index)->
+
     url = match[1]
     varName = "$lifelock-asset-url-"+count++
 
     # save url to vars
     vars[url] = varName
     # replace with var name
-    line = line.replace(url, varName)
+    lines[index] = lines[index].replace(url, varName)
 
-    console.log line
+#    console.log lines[index]
+
+    console.log index, lines[index]
 
 
-ParseSass.readFile('./resources/styles/compiled-offers.scss')
+ParseSass.readFile('/Users/james.kiely/partner-offers/resources/styles/compiled-offers.scss')
