@@ -29,7 +29,7 @@ ParseSass =
         while match?
           @forEachMatch(match,lines, index)
           match = @myRegexp.exec(line)
-    @printAllLines(lines)
+    @outputAllLines(lines)
 
   forEachMatch:(match,lines, index)->
 
@@ -41,9 +41,14 @@ ParseSass =
     # replace with var name
     lines[index] = lines[index].replace(url, varName)
 
-  printAllLines: (lines)->
-    for line in lines
-      fs.appendFileSync @output, line+"\n"
+  outputAllLines: (lines)->
+    fs.writeFileSync @output, ""
+    for k,v of vars
+      output = "#{v}: #{k};"
+      fs.appendFileSync @output, output+"\n"
+
+#    for line in lines
+#      fs.appendFileSync @output, line+"\n"
 
 
 
