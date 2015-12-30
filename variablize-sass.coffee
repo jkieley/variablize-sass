@@ -6,7 +6,7 @@ count = 0
 ParseSass =
   myRegexp: /url\((".+?")\)/g
   path:""
-  output: "./output.sass"
+  output: "./output.scss"
 
   inti: (path)->
     @path = path
@@ -43,7 +43,7 @@ ParseSass =
 
   printAllLines: (lines)->
     for line in lines
-      fs.appendFile @output, line+"\n", ->
+      fs.appendFileSync @output, line+"\n"
 
 
 
